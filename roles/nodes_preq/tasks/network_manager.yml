@@ -1,0 +1,10 @@
+---
+
+- name: Create NetworkManager config file
+  template:
+    src: templates/rke2-canal.conf.j2
+    dest: /etc/NetworkManager/conf.d/rke2-canal.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: need_reboot

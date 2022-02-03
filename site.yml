@@ -1,0 +1,14 @@
+#
+#  Cluster nodes prerequisites
+#
+- import_playbook: nodes_preq.yml
+
+#
+#  Used to deploy RKE2 cluster
+#
+- import_playbook: rke2.yml
+
+#
+#  Used to install rancher manager
+#
+- import_playbook: rnc_mgmt.yml

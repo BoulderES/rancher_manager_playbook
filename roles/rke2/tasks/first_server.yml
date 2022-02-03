@@ -1,0 +1,70 @@
+---
+
+- name: Create the RKE2 config dir
+  ansible.builtin.file:
+    state: directory
+    path: /etc/rancher/rke2
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy kubeconfig
+  ansible.builtin.template:
+    src: templates/config.yaml.j2
+    dest: /etc/rancher/rke2/config.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy Containerd Registry Configuration file
+  ansible.builtin.template:
+    src: "{{ rke2_custom_registry_path }}"
+    dest: /etc/rancher/rke2/registries.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: rke2_custom_registry | bool
+
+- name: Start RKE2 service on the first server
+  ansible.builtin.systemd:
+    name: "rke2-server.service"
+    state: started
+    enabled: true
+  environment:
+    RKE2_TOKEN: "{{ rke2_token }}"
+
+
+- name: Wait for the first server be ready
+  shell: |
+   set -o pipefail
+   /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get nodes | grep "{{ inventory_hostname }}"
+  args:
+    executable: /bin/bash
+  changed_when: false
+  register: first_server
+  until:
+    - '" Ready "  in first_server.stdout'
+  retries: 50
+  delay: 15
+
+- name: Set an Active Server variable
+  ansible.builtin.set_fact:
+    active_server: "{{ inventory_hostname }}"
+  run_once: yes
+
+- name: Create /root/.kube directory if it doesnt exist
+  file:
+    path: /root/.kube
+    state: directory
+    mode: 0644
+  tags:
+    - docker
+
+- name: Copy kubeconfig
+  copy:
+    src: /etc/rancher/rke2/rke2.yaml
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: 0600
+    remote_src: yes
