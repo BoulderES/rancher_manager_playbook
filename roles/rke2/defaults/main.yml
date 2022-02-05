@@ -6,15 +6,7 @@ kube_api_lb_host: "rnc-lab-lbr.dev"
 
 cluster_name: rnc_lab_mgmt
 custom_k8s_cluster_rancher_host: "rnc-lab-mgmt.dev"
-custom_k8s_cluster_rancher_replicas: 3
-cluster_debugging_enabled: false
 
-helm_version: "v3.5.3"
-helm_url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
-
-rancher_chart_release: "rancher-stable"
-rancher_image_tag: "v2.6-head"
-rancher_chart_url: "https://releases.rancher.com/server-charts/stable"
 rke2_custom_manifests:
   - nginx.yml
 
@@ -28,6 +20,7 @@ rke2_cluster_group_name: k8s_cluster
 # Default Ansible Inventory Group name for RKE2 Servers
 rke2_servers_group_name: masters
 
+rke2_type: server
 rke2_method: tar
 
 # Add additional SANs in k8s API TLS cert
@@ -85,4 +78,3 @@ rke2_download_kubeconf_path: /tmp
 
 # (Optional) List of Node labels
 # k8s_node_label: []
-

@@ -14,3 +14,16 @@ cluster_dns_server: "10.172.0.10"
 
 # Kubernetes master nodes will also run app workloads in case that they are big physical nodes
 kube_master_schedule: "false"
+
+rancher_chart_release: "rancher-stable"
+rancher_image_tag: "v2.6-head"
+rancher_chart_url: "https://releases.rancher.com/server-charts/stable"
+
+http_proxy: ''
+no_proxy: ''
+
+
+cluster_debugging_enabled: false
+
+custom_k8s_cluster_rancher_host: "rnc-lab-mgmt.dev"
+custom_k8s_cluster_rancher_replicas: 3
