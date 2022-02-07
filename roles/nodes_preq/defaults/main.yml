@@ -1,0 +1,2 @@
+helm_version: "v3.5.3"
+helm_url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
