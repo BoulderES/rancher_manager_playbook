@@ -1,0 +1,46 @@
+---
+
+# Map of Kubernetes minor version to RKE Kubernetes version
+kubernetes_supported_versions:
+  "1.20": v1.20.8-rancher1-1
+  "1.19": v1.19.6-rancher1-1
+  "1.18": v1.18.14-rancher1-1
+  "1.17": v1.17.16-rancher1-1
+
+# Default Kubernetes minor version
+kubernetes_version: "1.20"
+
+rke_release: v1.2.9
+rke_binary_url: "https://github.com/rancher/rke/releases/download/{{ rke_release }}/rke_linux-amd64"
+rke_binary_checksum: sha256:dbc3a659c333b1dcd54721b065156b46241e87724592e6c1db4c5d1ea05bc606
+rke_kubernetes_version: "{{ kubernetes_supported_versions[kubernetes_version] }}"
+
+rke_force_configure: false
+
+# This is the host that will run 'rke up'
+# By default, use the first host in the play
+rke_controller_hostname: "{{ ansible_play_hosts[0] }}"
+
+# Networking configuration
+#cluster_interface: "{{ ansible_default_ipv4.interface }}"
+# cluster_cidr: "{{ [ansible_facts[cluster_interface].ipv4.network, ansible_facts[cluster_interface].ipv4.netmask] | join('/') | ipaddr('net') }}"
+
+service_cluster_ip_range: "{{ kube_cni_services }}" #10.172.0.0/16
+cluster_cidr: "{{ kube_cni_pod }}" #10.171.0.0/16
+
+
+rke_ssh_user: rke_user
+rke_node_roles: ['controlplane', 'etcd', 'worker']
+rke_ssh_key_path: /home/rke_user/.ssh/id_rsa
+
+# Setting the flannel network plug-in
+rke_network_config:
+  plugin: calico
+
+
+rke_ingress_config:
+  provider: nginx
+  options:
+    use-forwarded-headers: "true"
+
+manifests_dir: "{{ ansible_env.HOME | default(ansible_env.PWD) | default('/root') }}/manifests"

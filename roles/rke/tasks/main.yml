@@ -1,0 +1,5 @@
+---
+
+- name: Run RKE installer
+  import_tasks: rke_install.yml
+#  when: inventory_hostname == ansible_play_hosts[0]

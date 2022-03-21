@@ -1,5 +1,5 @@
 ---
 
 - name: Run rancher installer
-  include_tasks: rancher.yml
+  import_tasks: rancher.yml
   when: inventory_hostname == ansible_play_hosts[0]

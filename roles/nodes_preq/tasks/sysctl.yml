@@ -6,6 +6,11 @@
     value: "1"
     state: present
 
+- name: Docker Kubernetes Assure kernel module ip_tables is loaded
+  modprobe:
+    name: ip_tables
+    state: present
+
 - name: Docker Kubernetes Assure kernel module bridge is loaded
   modprobe:
     name: br_netfilter

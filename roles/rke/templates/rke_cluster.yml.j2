@@ -1,0 +1,58 @@
+---
+
+cluster_name: "{{ cluster_name }}"
+
+kubernetes_version: "{{ rke_kubernetes_version }}"
+
+nodes:
+{% for host in ansible_play_batch %}
+  - hostname_override: "{{ hostvars[host].ansible_hostname }}"
+    address: "{{ hostvars[host].ansible_default_ipv4_address }}"
+    user: {{ rke_ssh_user }}
+    role:
+      - controlplane
+      - etcd
+      - worker
+    ssh_key_path: {{ rke_ssh_key_path }}
+{% endfor %}
+
+
+network:
+  {{ rke_network_config | to_nice_yaml(indent=2) | indent(width=2) }}
+
+ingress:
+  {{ rke_ingress_config | to_nice_yaml(indent=2) | indent(width=2) }}
+
+{% if rke_cloud_provider_config is defined %}
+cloud_provider:
+  {{ rke_cloud_provider_config | to_nice_yaml(indent=2) | indent(width=2) }}
+{% endif %}
+
+services:
+    kube-api:
+      # IP range for any services created on Kubernetes
+      # This must match the service_cluster_ip_range in kube-controller
+      service_cluster_ip_range: "{{ kube_cni_services }}" #10.172.0.0/16
+    kube-controller:
+      cluster_cidr: "{{ kube_cni_pod }}" #10.171.0.0/16
+      # This must match the service_cluster_ip_range in kube-api
+      service_cluster_ip_range: "{{ kube_cni_services }}" #10.172.0.0/16
+    kubelet:
+      cluster_domain: cluster.local
+      cluster_dns_server: "{{ cluster_dns_server }}" #10.172.0.10
+
+{% if rke_cloud_provider_addons is defined or rke_extra_addons is defined %}
+addons: |-
+  {{ rke_cloud_provider_addons | default('') | indent(width=2) }}
+  {{ rke_extra_addons | default('') | indent(width=2) }}
+{% endif %}
+
+{% set addons_include = (rke_cloud_provider_addons_include | default([], true)) + (rke_extra_addons_include | default([], true)) %}
+{% if addons_include %}
+addons_include:
+  {{ addons_include | to_nice_yaml(indent=2) | indent(width=2) }}
+{% endif %}
+
+{% if rke_cloud_provider_extra_config is defined or rke_extra_config is defined %}
+{{ rke_cloud_provider_extra_config | default({}, true) | combine(rke_extra_config | default({}, true), recursive=True) | to_nice_yaml(indent=2) }}
+{% endif %}
