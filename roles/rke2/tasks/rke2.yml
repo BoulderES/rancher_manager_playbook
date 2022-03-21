@@ -40,7 +40,7 @@
     INSTALL_RKE2_CHANNEL_URL: "{{ rke2_channel_url }}"
     INSTALL_RKE2_CHANNEL: "{{ rke2_channel }}"
     INSTALL_RKE2_METHOD: "{{ rke2_method }}"
-  when: (rke2_version != ( installed_rke2_version.stdout | default({})))
+  when: (kubernetes_version != ( installed_rke2_version.stdout | default({})))
         or installed_rke2_version is not defined
 
 - name: Creates directory rke2/server/manifests
@@ -62,10 +62,10 @@
   with_items: "{{ rke2_custom_manifests }}"
   when: rke2_custom_manifests
 
-#- name: Copy nginx Manifests
-#  copy:
-#    src: nginx.yml
-#    dest: /var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml
-#    owner: root
-#    group: root
-#    mode: 0644
+- name: Copy nginx Manifests
+  copy:
+    src: nginx.yml
+    dest: /var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml
+    owner: root
+    group: root
+    mode: 0644

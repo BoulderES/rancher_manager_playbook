@@ -45,6 +45,10 @@
     src: rancher-values.yml.j2
     dest: "/tmp/rancher-values.yaml"
 
+- name: Pause for 1 minutes to deploy nginx
+  pause:
+    minutes: 1
+
 - name: Rancher => Install the rancher Helm chart
   shell: "/usr/local/bin/helm install rancher rancher-stable/rancher --namespace cattle-system -f /tmp/rancher-values.yaml"
   register: helm_installation

@@ -18,12 +18,12 @@ vrrp_script chk_apiserver {
 vrrp_instance VI_1 {
     interface {{ lbr_interface }}
     virtual_router_id 11
-{% if groups[rke2_servers_group_name].0 == inventory_hostname|string() %}
+{% if groups[rke_servers_group_name].0 == inventory_hostname|string() %}
     state MASTER
 {% else %}
     state BACKUP
 {% endif %}
-{% for host in groups[rke2_servers_group_name] %}
+{% for host in groups[rke_servers_group_name] %}
     {%- if host|string() == inventory_hostname|string() %}
     priority {{ 150 - loop.index0 }}
     {% endif -%}
@@ -31,7 +31,7 @@ vrrp_instance VI_1 {
     advert_int 1
     unicast_src_ip {{ ansible_host }}
     unicast_peer {
-{% for host in groups[rke2_servers_group_name] %}
+{% for host in groups[rke_servers_group_name] %}
 {% if host|string() != inventory_hostname|string() %}
         {{ hostvars[host]['ansible_host'] }}
 {% endif %}

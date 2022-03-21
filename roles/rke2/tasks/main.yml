@@ -1,8 +1,4 @@
 ---
-- name: Install Keepalived
-  import_tasks: keepalived.yml
-  when:
-    - lbr_ipv4 is defined
 
 - name: Download and install RKE2
   import_tasks: rke2.yml
@@ -16,7 +12,7 @@
 - name: Prepare very first server node in the cluster
   import_tasks: first_server.yml
   when:
-    - inventory_hostname == groups[rke2_servers_group_name].0
+    - inventory_hostname == groups[rke_servers_group_name].0
     - active_server is not defined
 
 - name: Prepare and join remaining nodes of the cluster

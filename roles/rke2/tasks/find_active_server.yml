@@ -15,5 +15,5 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups[rke2_cluster_group_name] }}"
   when:
-    - inventory_hostname in groups[rke2_servers_group_name]
+    - inventory_hostname in groups[rke_servers_group_name]
     - ansible_facts.services["rke2-server.service"].state == "running"

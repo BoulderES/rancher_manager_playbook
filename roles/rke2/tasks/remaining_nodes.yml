@@ -46,7 +46,7 @@
     - groups[rke2_cluster_group_name] | length == all_ready_nodes.stdout | int
   retries: 100
   delay: 15
-  delegate_to: "{{ active_server | default(groups[rke2_servers_group_name].0) }}"
+  delegate_to: "{{ active_server | default(groups[rke_servers_group_name].0) }}"
   run_once: true
 
 - name: Create /root/.kube directory if it doesnt exist

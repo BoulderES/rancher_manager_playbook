@@ -1,5 +1,4 @@
 ---
-lbr_ipv4: 10.72.10.140
 lbr_interface: eth0
 lbr_dest_port: 6443
 kube_api_lb_host: "rnc-lab-lbr.dev"
@@ -19,7 +18,7 @@ no_proxy: ""
 rke2_cluster_group_name: k8s_cluster
 
 # Default Ansible Inventory Group name for RKE2 Servers
-rke2_servers_group_name: masters
+rke_servers_group_name: masters
 
 rke2_type: server
 rke2_method: tar

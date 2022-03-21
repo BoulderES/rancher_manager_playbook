@@ -20,3 +20,8 @@
 - import_tasks: disable_firewall.yml
 
 - import_tasks: disable_selinux.yml
+
+- name: Install Keepalived
+  import_tasks: ../../nodes_preq/tasks/keepalived.yml
+  when:
+    - lbr_ipv4 is defined

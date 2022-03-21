@@ -3,7 +3,7 @@
 server: https://{{ lbr_ipv4 }}:9345
 {% endif %}
 token: {{ rke2_token }}
-{% if inventory_hostname in groups[rke2_servers_group_name] %}
+{% if inventory_hostname in groups[rke_servers_group_name] %}
 cni: {{ rke2_cni }}
 {% if rke2_server_taint %}
 node-taint:
@@ -18,10 +18,10 @@ tls-san:
   - {{ san }}
 {% endfor %}
 {% endif %}
-{% if rke2_disable and ( inventory_hostname|string() in groups[rke2_servers_group_name] ) %}
+{% if rke2_disable and ( inventory_hostname|string() in groups[rke_servers_group_name] ) %}
 disable: {{ rke2_disable }}
 {% endif %}
-{% if rke2_kube_apiserver_args is defined and inventory_hostname in groups[rke2_servers_group_name] %}
+{% if rke2_kube_apiserver_args is defined and inventory_hostname in groups[rke_servers_group_name] %}
 kube-apiserver-arg: {{ rke2_kube_apiserver_args}}
 {% endif %}
 {% if ( k8s_node_label is defined ) %}

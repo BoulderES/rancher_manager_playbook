@@ -9,7 +9,10 @@ nodes:
   - hostname_override: "{{ host }}"
     address: "{{ hostvars[host].ansible_host }}"
     user: {{ rke_ssh_user }}
-    role: "{{ hostvars[host].ansible_host }}"
+    role:
+{% for role in hostvars[host].role %}
+      - {{ role }}
+{% endfor %}
 #      - controlplane
 #      - etcd
 #      - worker
