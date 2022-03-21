@@ -3,7 +3,7 @@
   shell: "/usr/local/bin/helm repo add {{ rancher_chart_release }} {{ rancher_chart_url }}"
 
 - name: Rancher => Create Rancher namespace
-  shell: "/var/lib/rancher/rke2/bin/kubectl create namespace cattle-system"
+  shell: "/usr/local/bin/kubectl create namespace cattle-system"
   ignore_errors: yes
 
 - name: Rancher => Loading rancher manager alias crt certificate
@@ -23,7 +23,7 @@
     mode: 0644
 
 - name: Rancher => Install rancher manager alias certificate as a secret
-  shell: "/var/lib/rancher/rke2/bin/kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=/tmp/tls.crt --key=/tmp/tls.key"
+  shell: "/usr/local/bin/kubectl -n cattle-system create secret tls tls-rancher-ingress --cert=/tmp/tls.crt --key=/tmp/tls.key"
   register: helm_installation
   ignore_errors: yes
 
@@ -36,7 +36,7 @@
     mode: 0644
 
 - name: Rancher => Install CA certificate as a secret
-  shell: "/var/lib/rancher/rke2/bin/kubectl -n cattle-system create secret generic tls-ca --from-file=/tmp/cacerts.pem"
+  shell: "/usr/local/bin/kubectl -n cattle-system create secret generic tls-ca --from-file=/tmp/cacerts.pem"
   register: helm_installation
   ignore_errors: yes
 

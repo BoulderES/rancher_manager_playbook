@@ -2,16 +2,6 @@
 # Kubernetes APIServer LB info
 kube_api_lb_port: "6443"
 
-# Network configuration
-# Pod networks
-kube_cni_pod: "10.171.0.0/16"
-
-# Services network
-kube_cni_services: "10.172.0.0/16"
-
-# DNS Service
-cluster_dns_server: "10.172.0.10"
-
 # Kubernetes master nodes will also run app workloads in case that they are big physical nodes
 kube_master_schedule: "false"
 

@@ -6,9 +6,9 @@
 #
 #  Used to deploy RKE2 cluster
 #
-- import_playbook: rke2.yml
+#- import_playbook: rke.yml
 
 #
 #  Used to install rancher manager
 #
-- import_playbook: rnc_mgmt.yml
+#- import_playbook: rnc_mgmt.yml

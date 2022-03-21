@@ -1,19 +1,22 @@
 ---
+kubernetes_version: "v1.21.9-rancher1-1"
+cluster_name: rnc_lab_mgmt
 
-# Map of Kubernetes minor version to RKE Kubernetes version
-kubernetes_supported_versions:
-  "1.20": v1.20.8-rancher1-1
-  "1.19": v1.19.6-rancher1-1
-  "1.18": v1.18.14-rancher1-1
-  "1.17": v1.17.16-rancher1-1
+# Network configuration
+# Pod networks
+kube_cni_pod: "10.171.0.0/16"
 
-# Default Kubernetes minor version
-kubernetes_version: "1.20"
+# Services network
+kube_cni_services: "10.172.0.0/16"
 
-rke_release: v1.2.9
+# DNS Service
+cluster_dns_server: "10.172.0.10"
+
+rke_config_dir: "/root/rke"
+rke_release: v1.3.7
 rke_binary_url: "https://github.com/rancher/rke/releases/download/{{ rke_release }}/rke_linux-amd64"
-rke_binary_checksum: sha256:dbc3a659c333b1dcd54721b065156b46241e87724592e6c1db4c5d1ea05bc606
-rke_kubernetes_version: "{{ kubernetes_supported_versions[kubernetes_version] }}"
+rke_binary_checksum: sha256:07a7162d654c84235e06a132caff465f17c206654e7bdf10821912d1c068e7cf
+rke_kubernetes_version: "{{ kubernetes_version }}"
 
 rke_force_configure: false
 
@@ -32,6 +35,8 @@ cluster_cidr: "{{ kube_cni_pod }}" #10.171.0.0/16
 rke_ssh_user: rke_user
 rke_node_roles: ['controlplane', 'etcd', 'worker']
 rke_ssh_key_path: /home/rke_user/.ssh/id_rsa
+
+kubectl_path: ""
 
 # Setting the flannel network plug-in
 rke_network_config:

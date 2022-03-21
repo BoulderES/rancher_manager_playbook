@@ -6,13 +6,13 @@ kubernetes_version: "{{ rke_kubernetes_version }}"
 
 nodes:
 {% for host in ansible_play_batch %}
-  - hostname_override: "{{ hostvars[host].ansible_hostname }}"
-    address: "{{ hostvars[host].ansible_default_ipv4_address }}"
+  - hostname_override: "{{ host }}"
+    address: "{{ hostvars[host].ansible_host }}"
     user: {{ rke_ssh_user }}
-    role:
-      - controlplane
-      - etcd
-      - worker
+    role: "{{ hostvars[host].ansible_host }}"
+#      - controlplane
+#      - etcd
+#      - worker
     ssh_key_path: {{ rke_ssh_key_path }}
 {% endfor %}
 

@@ -1,0 +1,30 @@
+---
+
+# Deploy SSH key
+- name: Add rke_user to docker group
+  user:
+    name: "rke_user"
+    group: "docker"
+    create_home: yes
+    home: /home/rke_user/
+
+
+- name: Deploy rke_user SSH Pub Key
+  authorized_key:
+    user: rke_user
+    key: " {{ lookup('file', 'id_rsa.pub') }} "
+    state: present
+    manage_dir: yes
+
+- name: Deploy rke_user SSH Pub Key
+  copy:
+    src: "id_rsa"
+    dest: /home/rke_user/.ssh/id_rsa
+
+
+# sudo usermod -aG docker rke_user 
+#- name: Add "rke_user" user to "docker" group
+#  user:
+#    name: "rke_user"
+#    group: "docker"
+#    append: yes

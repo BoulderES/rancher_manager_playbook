@@ -1,4 +1,6 @@
 ---
+- import_tasks: common.yml
+
 - import_tasks: chrony.yml
 
 - import_tasks: network_manager.yml
@@ -6,7 +8,7 @@
 - import_tasks: sysctl.yml
 
 ## not necessary
-#- import_tasks: docker.yml
+- import_tasks: docker.yml
 
 - import_tasks: yum_packages.yml
 

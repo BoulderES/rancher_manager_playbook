@@ -36,7 +36,7 @@
   command:
     cmd: /tmp/rke2.sh
   environment:
-    INSTALL_RKE2_VERSION: "{{ rke2_version }}"
+    INSTALL_RKE2_VERSION: "{{ kubernetes_version }}"
     INSTALL_RKE2_CHANNEL_URL: "{{ rke2_channel_url }}"
     INSTALL_RKE2_CHANNEL: "{{ rke2_channel }}"
     INSTALL_RKE2_METHOD: "{{ rke2_method }}"
